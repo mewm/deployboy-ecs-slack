@@ -1,0 +1,10 @@
+{
+  "name": "ecs_slack_status",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Dennis Micky Jensen <root@mewm.org>",
+  "license": "MIT",
+  "dependencies": {
+    "slack": "^9.0.7"
+  }
+}
