@@ -5,6 +5,13 @@
   "author": "Dennis Micky Jensen <root@mewm.org>",
   "license": "MIT",
   "dependencies": {
+    "aws-sdk": "^2.141.0",
     "slack": "^9.0.7"
+  },
+  "scripts": {
+    "start": "node index.js"
+  },
+  "devDependencies": {
+    "eslint": "^4.10.0"
   }
 }
