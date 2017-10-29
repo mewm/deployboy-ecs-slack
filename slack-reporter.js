@@ -48,8 +48,8 @@ class SlackReporter {
      * @param {Object} deployments
      */
     async deploymentFinished(deployments) {
-        const message = `*${this.config.cluster.toUpperCase()} is fully rolled out on AWS! ` +
-            `_API will be available after next health check!_ :beers:*\n`;
+        const message = `*${this.config.cluster.toUpperCase()} is fully rolled out on AWS!* ` +
+            `- _API will be available after next health check!_ :beers:\n`;
         await this.postMessage(message, deployments);
     }
 
@@ -64,9 +64,10 @@ class SlackReporter {
     }
 
     /**
-     * @param text
-     * @param deployments
-     * @param color
+     * Message to slack with beautiful attachment
+     * @param {String} text
+     * @param {Object} deployments
+     * @param {String} color
      * @returns {Promise<void>}
      */
     async postMessage(text, deployments, color = '#36a64f') {
@@ -87,7 +88,8 @@ class SlackReporter {
     }
 
     /**
-     * @param text
+     * A /me message
+     * @param {String} text
      * @returns {Promise<void>}
      */
     async meMessage(text) {
@@ -96,7 +98,7 @@ class SlackReporter {
     }
 
     /**
-     * @param deployments
+     * @param {Object} deployments
      * @returns {string}
      */
     static presentContainerStatusText(deployments) {
@@ -105,7 +107,7 @@ class SlackReporter {
     }
 
     /**
-     * @param deployments
+     * @param {Object} deployments
      * @returns {*[]}
      */
     static presentContainerStatusFields(deployments) {
@@ -118,7 +120,7 @@ class SlackReporter {
     }
 
     /**
-     * @param deployments
+     * @param {Object} deployments
      * @returns {{desired: Integer, running: Integer, pending: Integer}}
      */
     static getContainerStatus(deployments) {
@@ -128,9 +130,13 @@ class SlackReporter {
         return {desired, running, pending};
     }
 
+    /**
+     * Naughty console output
+     * @param {String} text
+     */
     clog(text) {
         const cluster = this.config.cluster.toUpperCase();
-        console.log(`${chalk.bgGreen.white.bold(cluster)}: ${text}`);
+        console.log(`${chalk.bgGreen.whiteBright.bold(cluster)}: ${text}`);
     }
 }
 

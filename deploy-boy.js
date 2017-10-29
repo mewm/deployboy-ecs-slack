@@ -80,7 +80,7 @@ class DeployBoy {
     /**
      * Monitors a deployment, emitting status as it goes.
      * If listen mode is on, it starts listen for new deployments again
-     * @param services
+     * @param {Object} services
      * @returns {Promise<*>}
      */
     async monitorDeployment(services) {
@@ -109,7 +109,7 @@ class DeployBoy {
     }
 
     /**
-     * @param deployments
+     * @param {Object} deployments
      * @returns {boolean}
      */
     static isDeploymentDone(deployments) {
@@ -119,6 +119,7 @@ class DeployBoy {
     }
 
     /**
+     * I promise I will sleep
      * @param {Integer} ms
      * @returns {Promise<any>}
      */
@@ -127,8 +128,8 @@ class DeployBoy {
     }
 
     /**
-     * @param deployments
-     * @returns Integer
+     * @param {Object} deployments
+     * @returns {Integer}
      */
     static getRunningCount(deployments) {
         return deployments
@@ -137,8 +138,8 @@ class DeployBoy {
     }
 
     /**
-     * @param deployments
-     * @returns Integer
+     * @param {Object} deployments
+     * @returns {Integer}
      */
     static getDesiredCount(deployments) {
         return deployments
@@ -148,7 +149,7 @@ class DeployBoy {
 
     /**
      * @param deployments
-     * @returns Integer
+     * @returns {String}
      */
     static getPendingCount(deployments) {
         return deployments
