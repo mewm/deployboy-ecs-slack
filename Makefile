@@ -1,3 +1,5 @@
+all: build push
+
 build:
 	docker build -t mewm/deployboy-ecs-slack .
 
