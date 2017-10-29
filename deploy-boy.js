@@ -11,21 +11,20 @@ class DeployBoy {
         this.ecs = ecs;
         this.e = eventEmitter;
         this.i = 0;
-        this.bindReportingEvents();
     }
 
     /**
      * Binds events to the slack reporter
      */
     bindReportingEvents() {
+        const r = this.reporter;
         this.e
-            .on('startYourEngines', this.reporter.boot)
-            .on('waiting_for_deployment', this.reporter.waitingForDeployment)
-            .on('still_waiting_for_deployment', this.reporter.stillWaitingForDeployment)
-            .on('deployment_detected', this.reporter.deploymentDetected)
-            .on('deployment_ongoing', this.reporter.deploymentOngoing)
-            .on('deployment_finished', this.reporter.deploymentFinished)
-            .on('gaveup_watching', this.reporter.gaveUpWatching);
+            .on('waiting_for_deployment', r.waitingForDeployment.bind(r))
+            .on('still_waiting_for_deployment', r.stillWaitingForDeployment.bind(r))
+            .on('deployment_detected', r.deploymentDetected.bind(r))
+            .on('deployment_ongoing', r.deploymentOngoing.bind(r))
+            .on('deployment_finished', r.deploymentFinished.bind(r))
+            .on('gaveup_watching', r.gaveUpWatching.bind(r));
     }
 
     /**
@@ -33,8 +32,8 @@ class DeployBoy {
      * @returns {Promise<void>}
      */
     async startYourEngines() {
+        this.bindReportingEvents();
         try {
-            this.e.emit('startYourEngines');
             const listServices = await this.ecs.listServices({cluster: this.config.cluster}).promise();
             const serviceArns = listServices.serviceArns;
 
@@ -63,7 +62,6 @@ class DeployBoy {
         await DeployBoy.sleep(this.config.longpollinterval);
         return await this.listenForNewDeployment(services);
     }
-
 
     /**
      * Gets current deployment for all provided services
@@ -115,8 +113,8 @@ class DeployBoy {
      * @returns {boolean}
      */
     static isDeploymentDone(deployments) {
-        let desired = deployments.reduce((carry, item) => carry + item.desiredCount);
-        let running = deployments.reduce((carry, item) => carry + item.runningCount);
+        let desired = DeployBoy.getDesiredCount(deployments);
+        let running = DeployBoy.getRunningCount(deployments);
         return desired === running;
     }
 
@@ -126,6 +124,36 @@ class DeployBoy {
      */
     static async sleep(ms) {
         return new Promise(r => setTimeout(r, ms));
+    }
+
+    /**
+     * @param deployments
+     * @returns Integer
+     */
+    static getRunningCount(deployments) {
+        return deployments
+            .map(item => item.runningCount)
+            .reduce((c, i) => c + i);
+    }
+
+    /**
+     * @param deployments
+     * @returns Integer
+     */
+    static getDesiredCount(deployments) {
+        return deployments
+            .map(item => item.desiredCount)
+            .reduce((c, i) => c + i);
+    }
+
+    /**
+     * @param deployments
+     * @returns Integer
+     */
+    static getPendingCount(deployments) {
+        return deployments
+            .map(item => item.pendingCount)
+            .reduce((c, i) => c + i);
     }
 }
 
