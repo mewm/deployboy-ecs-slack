@@ -93,15 +93,18 @@ class DeployBoy {
                 this.i = 0;
                 return await this.listenForNewDeployment(services);
             } else {
-                process.exit(0);
+                this.e.removeListener('deployment_finished', () => console.log('Removed finished listener...'));
+                this.e.once('see_you_later', this.seeYouLater);
+                return;
             }
         }
 
         this.e.emit('deployment_ongoing', deployments);
         this.i++;
-        if (this.i === 100) {
+        if (this.i === 500) {
+            this.e.once('see_you_layer', this.seeYouLater);
             this.e.emit('gaveup_watching', i, deployments);
-            process.exit(1);
+            return;
         }
 
         await DeployBoy.sleep(this.config.longpollinterval);
@@ -149,12 +152,17 @@ class DeployBoy {
 
     /**
      * @param deployments
-     * @returns {String}
+     * @returns {Integer}
      */
     static getPendingCount(deployments) {
         return deployments
             .map(item => item.pendingCount)
             .reduce((c, i) => c + i);
+    }
+
+    seeYouLater() {
+        console.log(`this.config.cluster says see you later!`);
+        process.exit(0);
     }
 }
 

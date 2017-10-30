@@ -5,12 +5,14 @@ class SlackReporter {
     /**
      * @param {Object} config
      * @param {Slack} slackbot
+     * @param {EventEmitter} event
      */
-    constructor(config, slackbot) {
+    constructor(config, slackbot, event) {
         this.config = config;
         this.bot = slackbot;
         this.channel = config.slackchannel;
         this.token = config.slacktoken;
+        this.e = event;
     }
 
     /**
@@ -49,8 +51,8 @@ class SlackReporter {
      */
     async deploymentFinished(deployments) {
         const message = `*${this.config.cluster.toUpperCase()} is fully rolled out on AWS!* ` +
-            `- _API will be available after next health check!_ :beers:\n`;
-        await this.postMessage(message, deployments);
+            `- _API will be available after next health check!_ :beers:`;
+        const post = await this.postMessage(message, deployments) && this.e.emit('see_you_layer');
     }
 
     /**
@@ -58,7 +60,6 @@ class SlackReporter {
      * @param {Object} deployments
      */
     async gaveUpWatching(iteration, deployments) {
-        const {desired, running, pending} = SlackReporter.getContainerStatus(deployments);
         const message = `*${this.config.cluster.toUpperCase()}:* Gave up watching after ${iteration} iterations.\n`;
         await this.postMessage(message, deployments, '#64000d');
     }
@@ -85,6 +86,7 @@ class SlackReporter {
             as_user: true,
             attachments: attachment
         });
+        this.clog(text).clog(SlackReporter.presentContainerStatusText(deployments));
     }
 
     /**
@@ -93,7 +95,7 @@ class SlackReporter {
      * @returns {Promise<void>}
      */
     async meMessage(text) {
-        console.log(text);
+        this.clog(text);
         await this.bot.chat.meMessage({token: this.token, channel: this.channel, text});
     }
 
@@ -132,11 +134,13 @@ class SlackReporter {
 
     /**
      * Naughty console output
-     * @param {String} text
+     * @param text
+     * @returns {SlackReporter}
      */
     clog(text) {
         const cluster = this.config.cluster.toUpperCase();
         console.log(`${chalk.bgGreen.whiteBright.bold(cluster)}: ${text}`);
+        return this;
     }
 }
 

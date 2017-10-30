@@ -8,7 +8,7 @@ const argv = require('minimist')(process.argv.slice(2));
 const config = {
     cluster: argv['cluster'] || process.env.DEPLOYBOY_CLUSTER,
     region: argv['region'] || process.env.DEPLOYBOY_REGION,
-    listenmode: argv['listen'] || process.env.DEPLOYBOY_LISTENMODE || false,
+    listenmode: argv['listen'] === 0 ? false : process.env.DEPLOYBOY_LISTENMODE || false,
     slacktoken: argv['slacktoken'] || process.env.DEPLOYBOY_SLACKTOKEN,
     slackchannel: argv['slackchannel'] || process.env.DEPLOYBOY_SLACKCHANNELID,
     longpollinterval: argv['pollms'] || 3500
@@ -24,7 +24,8 @@ Object.values(config).map((item, key) => {
 
 const event = new EventEmitter();
 const ecs = new AWS.ECS({region: config.region});
-const reporter = new SlackReporter(config, new Slack({token: config.slacktoken}));
+const slack = new Slack({token: config.slacktoken});
+const reporter = new SlackReporter(config, slack, event);
 const deployBoy = new DeployBoy(reporter, event, ecs, config);
 
 (async function run() {
