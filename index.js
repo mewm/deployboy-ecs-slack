@@ -1,8 +1,8 @@
 const AWS = require('aws-sdk');
 const EventEmitter = require('events').EventEmitter;
 const Slack = require('slack');
-const SlackReporter = require('./slack-reporter.js');
-const DeployBoy = require('./deploy-boy');
+const SlackReporter = require('./src/slack-reporter.js');
+const DeployBoy = require('./src/deploy-boy');
 const argv = require('minimist')(process.argv.slice(2));
 
 const config = {
