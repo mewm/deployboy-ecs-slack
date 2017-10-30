@@ -160,8 +160,11 @@ class DeployBoy {
             .reduce((c, i) => c + i);
     }
 
+    /**
+     * Ciao!
+     */
     seeYouLater() {
-        console.log(`this.config.cluster says see you later!`);
+        console.log(`${this.config.cluster} says see you later!`);
         process.exit(0);
     }
 }
