@@ -7,7 +7,9 @@
   "dependencies": {
     "aws-sdk": "^2.141.0",
     "chalk": "^2.3.0",
+    "luxafor": "^1.1.1",
     "minimist": "^1.2.0",
+    "node-hid": "^0.5.7",
     "slack": "^9.0.7"
   },
   "scripts": {
