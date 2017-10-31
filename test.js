@@ -10,8 +10,8 @@ let opts = {
         }
     }
 };
-device = new Luxafor(options);
-device.setColor('#fff');
+device = new Luxafor(opts);
+device.setColor('#ff9900');
 
 /*
  { vendorId: 1240,
