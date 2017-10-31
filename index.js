@@ -3,6 +3,7 @@ const EventEmitter = require('events').EventEmitter;
 const Slack = require('slack');
 const Luxafor = require('luxafor-api');
 const SlackReporter = require('./src/slack-reporter.js');
+const LuxaforReporter = require('./src/luxafor-reporter.js');
 const DeployBoy = require('./src/deploy-boy');
 const argv = require('minimist')(process.argv.slice(2));
 
@@ -27,23 +28,14 @@ Object.values(config).map((item, key) => {
 const event = new EventEmitter();
 const ecs = new AWS.ECS({region: config.region});
 
-
 if (config.reporter === 'slack') {
+    const slack = new Slack({token: config.slacktoken});
     const reporter = new SlackReporter(config, slack, event);
     const deployBoy = new DeployBoy(reporter, event, ecs, config);
 } else if (config.reporter === 'luxafor') {
-    // api call to change the color
-    let opts = {
-        defaults: {
-            wave: {
-                type: 2,
-                speed: 90,
-                repeat: 5
-            }
-        }
-    };
-    device = new Luxafor(opts);
-    device.setColor('#fff');
+    const luxafor = new Luxafor();
+    const reporter = new LuxaforReporter(config, luxafor, event);
+    const deployBoy = new DeployBoy(reporter, event, ecs, config);
 } else {
     throw new Error('Reporter not provided or available.');
 }

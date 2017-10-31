@@ -4,17 +4,20 @@ const chalk = require('chalk');
 class LuxaforReporter {
     /**
      * @param {Object} config
+     * @param {Luxafor} luxafor
      * @param {EventEmitter} event
      */
-    constructor(config, event) {
+    constructor(config, luxafor, event) {
         this.config = config;
         this.e = event;
+        this.lux = luxafor;
     }
 
     /**
      * @param {Object} serviceArns
      */
     async waitingForDeployment(serviceArns) {
+        this.lux.setColor('#ff0000');
     }
 
     /**
@@ -39,6 +42,10 @@ class LuxaforReporter {
      * @param {Object} deployments
      */
     async deploymentFinished(deployments) {
+        this.lux.setColor('#00ff00');
+        setTimeout(() => {
+            this.lux.setColor('#0000ff');
+        }, 10000);
     }
 
     /**
@@ -47,7 +54,6 @@ class LuxaforReporter {
      */
     async gaveUpWatching(iteration, deployments) {
     }
-
 
 
     /**
