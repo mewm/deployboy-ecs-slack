@@ -1,4 +1,5 @@
 const DeployBoy = require('./deploy-boy');
+const SlackReporter = require('./slack-reporter');
 const chalk = require('chalk');
 
 class LuxaforReporter {
@@ -18,18 +19,21 @@ class LuxaforReporter {
      */
     async waitingForDeployment(serviceArns) {
         this.lux.setColor('#ffff00');
+        this.clog('Waiting for deployment');
     }
 
     /**
      * @param {Object} deployments
      */
     async stillWaitingForDeployment(deployments) {
+        this.clog('Still waiting...');
     }
 
     /**
      * @param {Object} deployments
      */
     async deploymentDetected(deployments) {
+        this.clog('Deployment detected');
         this.lux.setColor('#0000ff');
     }
 
@@ -37,12 +41,14 @@ class LuxaforReporter {
      * @param {Object} deployments
      */
     deploymentOngoing(deployments) {
+        this.clog('Rolling...');
     }
 
     /**
      * @param {Object} deployments
      */
     async deploymentFinished(deployments) {
+        this.clog('Deployment finished.');
         this.lux.setColor('#00ff00');
         setTimeout(() => {
             this.lux.setColor('#FF00FF');
