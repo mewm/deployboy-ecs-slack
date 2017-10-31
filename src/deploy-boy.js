@@ -1,6 +1,6 @@
 class DeployBoy {
     /**
-     * @param {SlackReporter} reporter
+     * @param {SlackReporter|LuxaforReporter} reporter
      * @param eventEmitter
      * @param {ECS} ecs
      * @param config

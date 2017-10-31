@@ -17,7 +17,7 @@ class LuxaforReporter {
      * @param {Object} serviceArns
      */
     async waitingForDeployment(serviceArns) {
-        this.lux.setColor('#ff0000');
+        this.lux.setColor('#ffff00');
     }
 
     /**
@@ -30,6 +30,7 @@ class LuxaforReporter {
      * @param {Object} deployments
      */
     async deploymentDetected(deployments) {
+        this.lux.setColor('#0000ff');
     }
 
     /**
@@ -44,7 +45,7 @@ class LuxaforReporter {
     async deploymentFinished(deployments) {
         this.lux.setColor('#00ff00');
         setTimeout(() => {
-            this.lux.setColor('#0000ff');
+            this.lux.setColor('#FF00FF');
         }, 10000);
     }
 
@@ -79,4 +80,4 @@ class LuxaforReporter {
     }
 }
 
-module.exports = SlackReporter;
+module.exports = LuxaforReporter;

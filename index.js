@@ -27,19 +27,23 @@ Object.values(config).map((item, key) => {
 
 const event = new EventEmitter();
 const ecs = new AWS.ECS({region: config.region});
-
+let deployBoy = false;
 if (config.reporter === 'slack') {
+
     const slack = new Slack({token: config.slacktoken});
     const reporter = new SlackReporter(config, slack, event);
     const deployBoy = new DeployBoy(reporter, event, ecs, config);
+    deployBoy.startYourEngines();
+
 } else if (config.reporter === 'luxafor') {
+
     const luxafor = new Luxafor();
     const reporter = new LuxaforReporter(config, luxafor, event);
     const deployBoy = new DeployBoy(reporter, event, ecs, config);
+    deployBoy.startYourEngines();
+
 } else {
     throw new Error('Reporter not provided or available.');
 }
 
-(async function run() {
-    await deployBoy.startYourEngines();
-})();
+
