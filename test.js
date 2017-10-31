@@ -13,6 +13,7 @@ let opts = {
 device = new Luxafor(options);
 device.setColor('#fff');
 
+/*
  { vendorId: 1240,
     productId: 62322,
     path: 'IOService:/AppleACPIPlatformExpert/PCI0@0/AppleACPIPCI/XHC1@14/XHC1@14000000/HS01@14100000/LUXAFOR FLAG@14100000/IOUSBHostInterface@0/IOUSBHostHIDDevice@14100000,0',
