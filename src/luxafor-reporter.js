@@ -18,8 +18,8 @@ class LuxaforReporter {
      * @param {Object} serviceArns
      */
     async waitingForDeployment(serviceArns) {
-        this.lux.setColor('#ffff00');
         this.clog('Waiting for deployment');
+        this.lux.setColor('#ffff00');
 
     }
 
