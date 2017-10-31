@@ -17,8 +17,6 @@ const config = {
     longpollinterval: argv['pollms'] || 3500
 };
 
-console.log
-
 // Check for config sufficiency
 const configKeys = Object.keys(config);
 Object.values(config).map((item, key) => {
