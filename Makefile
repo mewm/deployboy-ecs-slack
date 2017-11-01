@@ -9,3 +9,6 @@ push:
 
 listen:
     docker run mewm/deployboy-ecs-slack yarn run start -- --region=eu-central-1 --cluster=backend-api-sta --slackchannel=C1H48MAG6 --pollms=2000
+
+luxafor:
+		node index.js --reporter=luxafor

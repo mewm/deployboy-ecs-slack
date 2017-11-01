@@ -19,8 +19,8 @@ class LuxaforReporter {
      */
     async waitingForDeployment(serviceArns) {
         this.clog('Waiting for deployment');
-        this.lux.setColor('#ffff00');
-
+        this.lux.setColor('#EEff00');
+        this.lux.wave('#00ffff', 1, 1, 4);
     }
 
     /**
@@ -36,7 +36,8 @@ class LuxaforReporter {
      */
     async deploymentDetected(deployments) {
         this.clog('Deployment detected');
-        this.lux.setColor('#0000ff');
+        this.lux.setColor('#00ff00');
+        this.lux.wave('#000fff', 4, 4, 0);
         this.clog(SlackReporter.presentContainerStatusText(deployments));
     }
 
@@ -53,10 +54,10 @@ class LuxaforReporter {
      */
     async deploymentFinished(deployments) {
         this.clog('Deployment finished.');
-        this.lux.setColor('#00ff00');
         this.clog(SlackReporter.presentContainerStatusText(deployments));
         setTimeout(() => {
-            this.lux.setColor('#FF00FF');
+            this.lux.setColor('#00ffff');
+            this.lux.wave('#ff00ff', 4, 1, 10);
         }, 10000);
     }
 
@@ -67,7 +68,6 @@ class LuxaforReporter {
     async gaveUpWatching(iteration, deployments) {
 
     }
-
 
     /**
      * @param {Object} deployments
